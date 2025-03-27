@@ -57,6 +57,7 @@ const LoginForm = ({
   onOpenSignUpPopUp: () => void;
 }) => {
   const [isVisible, setIsVisible] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
   const fields = useForm({
@@ -65,19 +66,15 @@ const LoginForm = ({
       password: "",
     },
     resolver: zodResolver(loginSchema),
+    mode: "onChange",
   });
 
   const { handleSubmit } = fields;
 
-  const {
-    formState: { isValid, isDirty },
-  } = fields;
-
   const handleLogin: SubmitHandler<LoginForm> = useCallback(
     async ({ email, password }) => {
       try {
-        console.log("email: ", email);
-        console.log("password: ", password);
+        setIsLoading(true);
         const response = await signIn("credentials", {
           email,
           password,
@@ -85,11 +82,15 @@ const LoginForm = ({
         });
 
         if (response?.ok === false) {
-          console.log("error: ", response.error);
-          console.log("status: ", response.status);
+          console.error("Login failed:", response.error);
+        } else if (response?.ok) {
+          // Successfully logged in
+          window.location.reload();
         }
       } catch (error) {
         console.error("Failed to sign in", error);
+      } finally {
+        setIsLoading(false);
       }
     },
     []
@@ -151,30 +152,12 @@ const LoginForm = ({
           size="lg"
           radius="sm"
           onClick={handleSubmit(handleLogin)}
-          isDisabled={!isValid || !isDirty}
+          isLoading={isLoading}
+          isDisabled={!fields.formState.isValid || isLoading}
           className="w-full disabled:cursor-not-allowed"
         >
           Log in
         </Button>
-        <div className="flex justify-center items-center my-1">
-          <hr className="h-px flex-1 bg-text/20 border-text/20" />
-          <span className="mx-4 text-text/40 text-sm">OR</span>
-          <hr className="h-px flex-1 bg-text/20 border-text/20" />
-        </div>
-        <button
-          className="w-full flex items-center justify-center text-sm font-medium px-2 py-2.5 gap-2 border-2 border-default-200 hover:border-default-400 rounded-lg text-text"
-          onClick={() => signIn("cognito")}
-        >
-          <Image
-            width={20}
-            height={20}
-            loading="lazy"
-            alt="google logo"
-            className="w-6 h-6"
-            src="https://www.svgrepo.com/show/475656/google-color.svg"
-          />
-          Continue with Google
-        </button>
         <small className="text-center my-2 text-sm font-medium text-text/60">
           Need to create an account?{" "}
           <span
