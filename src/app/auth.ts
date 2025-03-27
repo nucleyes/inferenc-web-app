@@ -1,4 +1,6 @@
-import NextAuth, { DefaultSession, User } from "next-auth";
+import NextAuth from "next-auth";
+import type { NextAuthOptions } from "next-auth";
+import { type DefaultSession, type User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 declare module "next-auth" {
@@ -10,12 +12,7 @@ declare module "next-auth" {
   }
 }
 
-export const {
-  auth,
-  signIn,
-  signOut,
-  handlers: { GET, POST },
-} = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       id: "credentials",
@@ -51,11 +48,10 @@ export const {
       }
       return session;
     },
-    authorized({ auth }) {
-      return !!auth?.user;
-    },
   },
   pages: {
     signIn: "/login",
   },
-});
+};
+
+export default NextAuth(authOptions);

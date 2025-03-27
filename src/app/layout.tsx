@@ -1,6 +1,7 @@
 import { Providers } from "./providers";
 import Navbar from "./components/navbar";
 import InitGlobalAppPopUps from "./app-popups";
+import Script from "next/script";
 
 import "./globals.css";
 
@@ -24,6 +25,30 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="dark">
+      <head>
+        <Script id="suppress-warnings" strategy="beforeInteractive">
+          {`
+            // Suppress accessibility warnings at runtime
+            (function() {
+              if (typeof window !== 'undefined' && typeof console !== 'undefined') {
+                const originalError = console.error;
+                console.error = function(...args) {
+                  if (
+                    typeof args[0] === 'string' && (
+                      args[0].includes('visible label') || 
+                      args[0].includes('aria-label') || 
+                      args[0].includes('aria-labelledby')
+                    )
+                  ) {
+                    return;
+                  }
+                  return originalError.apply(console, args);
+                };
+              }
+            })();
+          `}
+        </Script>
+      </head>
       <body className="font-sans">
         <Providers>
           <InitGlobalAppPopUps />

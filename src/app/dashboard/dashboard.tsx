@@ -145,13 +145,19 @@ const MainDashBoardContent = ({
             isIconOnly
             size="sm"
             variant="light"
+            aria-label="Open threads"
             onClick={() => onChangeThreadsDrawer(true)}
           >
             <DoubleArrowRightOutlineIcon />
           </Button>
         ) : null}
         <div className="flex justify-end gap-x-2 items-center">
-          <Button isIconOnly size="sm" variant="light">
+          <Button 
+            isIconOnly 
+            size="sm" 
+            variant="light"
+            aria-label="Clear chat"
+          >
             <BrushOutlineIcon />
           </Button>
           {onChangeLogsDrawer ? (
@@ -159,6 +165,7 @@ const MainDashBoardContent = ({
               isIconOnly
               size="sm"
               variant="light"
+              aria-label="Open logs"
               onClick={() => onChangeLogsDrawer(true)}
             >
               <AdjustmentsHorizontalIcon width={26} height={26} />
@@ -201,25 +208,21 @@ const MessageItem = ({
       <div className="flex-1">
         <h4 className="text-base font-semibold">{message.sender.name}</h4>
         <Linkify>
-          {/* {message.type === "bot" ? (
-            <TypeAnimation
-              sequence={[message.text]}
-              wrapper="span"
-              speed={50}
-              repeat={0}
-              className="[&>a]:text-blue-600 mt-0.5 text-sm font-normal whitespace-break-spaces break-word block"
-            />
-          ) : ( */}
           <p className="[&>a]:text-primary mt-0.5 text-sm font-normal whitespace-break-spaces break-word">
             {message.text}
           </p>
-          {/* )} */}
         </Linkify>
         {isLastItem && message.type === "bot" ? (
           <div className="flex items-center gap-x-4 text-grey mt-3">
-            <CopyAltIcon className="w-5 h-5 shrink-0" />
-            <ReloadIcon className="w-5 h-5 shrink-0" />
-            <DisLikeOutlineIcon className="w-5 h-5 shrink-0" />
+            <button aria-label="Copy message">
+              <CopyAltIcon className="w-5 h-5 shrink-0" />
+            </button>
+            <button aria-label="Regenerate response">
+              <ReloadIcon className="w-5 h-5 shrink-0" />
+            </button>
+            <button aria-label="Dislike">
+              <DisLikeOutlineIcon className="w-5 h-5 shrink-0" />
+            </button>
           </div>
         ) : null}
       </div>
@@ -255,7 +258,13 @@ const MessageBox = () => {
           className="flex-1 bg-transparent border-none outline-none resize-none max-h-[30vh]"
           defaultValue="NextUI is a React UI library that provides a set of accessible, reusable, and beautiful components."
         />
-        <Button isIconOnly variant="light" size="md" color="primary">
+        <Button 
+          isIconOnly 
+          variant="light" 
+          size="md" 
+          color="primary" 
+          aria-label="Send message"
+        >
           <SendArrowOutlineIcon className="w-5 h-5" />
         </Button>
       </div>

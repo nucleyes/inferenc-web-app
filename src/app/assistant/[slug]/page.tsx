@@ -1,10 +1,11 @@
 import { redirect } from "next/navigation";
 
-import { auth } from "../../auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../auth";
 import DefaultDashboard from "@/app/default-dashboard";
 
 export default async function Home() {
-  const session = await auth();
+  const session = await getServerSession(authOptions);
   console.log({ session });
 
   if (!session) {

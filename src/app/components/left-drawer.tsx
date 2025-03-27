@@ -34,7 +34,13 @@ const LeftDrawer = ({
       }}
     >
       <div className="flex items-center gap-x-2">
-        <Button size="sm" variant="light" isIconOnly onClick={onClose}>
+        <Button 
+          size="sm" 
+          variant="light" 
+          isIconOnly 
+          aria-label="Go back"
+          onClick={onClose}
+        >
           <ArrowLeftIcon className="w-5 h-5 font-bold text-white" />
         </Button>
         <h4 className="text-base font-semibold text-gray-50">{label}</h4>

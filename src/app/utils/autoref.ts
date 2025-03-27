@@ -1,4 +1,4 @@
-import type { ForwardedRef, ReactElement } from "react";
+import type { ForwardedRef, ReactElement, PropsWithoutRef, JSXElementConstructor } from "react";
 import { forwardRef } from "react";
 
 type AutoRefFunction = {
@@ -8,11 +8,11 @@ type AutoRefFunction = {
 
 export function autoRef<
   Fn extends AutoRefFunction,
-  Props extends { ref?: RefType },
+  Props extends { ref?: RefType | undefined },
   RefType
 >(fn: Fn) {
-  const AutoRef = (props: Props, ref: ForwardedRef<RefType>) =>
-    fn({ ...props, ref });
+  const AutoRef = (props: PropsWithoutRef<Props>, ref: ForwardedRef<RefType>) =>
+    fn({ ...props, ref } as any);
   AutoRef.displayName = fn.displayName || fn.name || "AutoRef";
   return forwardRef(AutoRef) as unknown as Fn;
 }
