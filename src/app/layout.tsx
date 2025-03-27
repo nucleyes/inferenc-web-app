@@ -1,15 +1,10 @@
-import { Inter } from "next/font/google";
-
 import { Providers } from "./providers";
 import Navbar from "./components/navbar";
 import InitGlobalAppPopUps from "./app-popups";
 
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export const metadata = {
-  metadataBase: new URL(`https://${process.env.VERCEL_URL}`),
   title: {
     default: "Next.js AI Chatbot",
     template: `%s - Next.js AI Chatbot`,
@@ -29,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="dark">
-      <body className={inter.className}>
+      <body className="font-sans">
         <Providers>
           <InitGlobalAppPopUps />
           <main className="min-h-screen bg-background-secondary flex flex-col">
