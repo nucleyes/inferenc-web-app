@@ -16,11 +16,14 @@ const nextConfig = {
       },
     ],
   },
+<<<<<<< HEAD
   // Suppress console messages during build
   eslint: {
     // Only warn in development to avoid build failures
     ignoreDuringBuilds: true,
   },
+=======
+>>>>>>> parent of bdc5dc4 (Fixed Build Issue)
   webpack: (config) => {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>

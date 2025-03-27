@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 import NextAuth from "next-auth";
 import type { NextAuthOptions } from "next-auth";
 import { type DefaultSession, type User } from "next-auth";
+=======
+import NextAuth, { DefaultSession } from "next-auth";
+>>>>>>> parent of bdc5dc4 (Fixed Build Issue)
 import CredentialsProvider from "next-auth/providers/credentials";
 
 declare module "next-auth" {
@@ -21,14 +25,13 @@ export const authOptions: NextAuthOptions = {
         email: { label: "email", type: "text" },
         password: { label: "password", type: "password" },
       },
-      async authorize(credentials, request): Promise<User | null> {
+      async authorize(credentials) {
         // Accept any credentials for demo purposes
         if (credentials?.email && credentials?.password) {
-          const email = String(credentials.email);
           return {
-            id: email,
-            email: email,
-            name: email.split('@')[0],
+            id: credentials.email,
+            email: credentials.email,
+            name: credentials.email.split('@')[0],
           };
         }
         return null;
